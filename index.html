@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Quiz - Unlimited Questions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: #4a6fc7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .screen {
+            display: none;
+            padding: 20px;
+            min-height: 400px;
+        }
+        
+        .home-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .welcome-title {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        
+        .feature-card {
+            background: #f5f7fb;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #4a6fc7;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .feature-desc {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .settings-panel {
+            background: #f5f7fb;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .settings-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .setting-item label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .setting-item select, .setting-item input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: #4a6fc7;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #3b5aa6;
+        }
+        
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-accent {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .btn-accent:hover {
+            background: #c0392b;
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #138496;
+        }
+        
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .quiz-area {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .question-number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-align: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .option {
+            padding: 15px;
+            background: #f5f7fb;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .option:hover {
+            background: #e6e9f0;
+            border-color: #c3cfe2;
+        }
+        
+        .option.selected {
+            background: #d6eaf8;
+            border-color: #3498db;
+        }
+        
+        .option.correct {
+            background: #d4efdf;
+            border-color: #2ecc71;
+        }
+        
+        .option.incorrect {
+            background: #fadbd8;
+            border-color: #e74c3c;
+        }
+        
+        .option-prefix {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .feedback-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        
+        .feedback-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+        
+        .feedback-text {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .correct-feedback {
+            color: #2ecc71;
+        }
+        
+        .incorrect-feedback {
+            color: #e74c3c;
+        }
+        
+        .explanation {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-top: 10px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .results-container {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .results-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #4a6fc7;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .results-feedback {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .excellent {
+            background: #d4efdf;
+            color: #27ae60;
+        }
+        
+        .good {
+            background: #d6eaf8;
+            color: #2980b9;
+        }
+        
+        .average {
+            background: #fdebd0;
+            color: #f39c12;
+        }
+        
+        .poor {
+            background: #fadbd8;
+            color: #e74c3c;
+        }
+        
+        .progress-container {
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #4a6fc7;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f5f7fb;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .question-count {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .preview-container {
+            display: none;
+            background: #f5f7fb;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .preview-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .preview-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        .preview-item {
+            padding: 10px;
+            background: white;
+            margin-bottom: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .preview-item:hover {
+            background: #e6e9f0;
+        }
+        
+        .preview-item.active {
+            background: #d6eaf8;
+            border-left: 4px solid #3498db;
+        }
+        
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #e74c3c;
+            background: #fadbd8;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .quiz-mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+        
+        .mode-btn {
+            padding: 10px 15px;
+            border: 2px solid #4a6fc7;
+            border-radius: 5px;
+            background: white;
+            color: #4a6fc7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .mode-btn.active {
+            background: #4a6fc7;
+            color: white;
+        }
+        
+        .infinite-mode-info {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 600px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .option {
+                padding: 12px;
+            }
+            
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .back-btn {
+                position: static;
+                transform: none;
+                margin-bottom: 10px;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            .quiz-mode-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="back-btn" id="backBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h1>Mega Quiz</h1>
+            <p class="subtitle">Unlimited Questions - Learn Without Limits!</p>
+        </header>
+        
+        <!-- Home Screen -->
+        <div class="screen home-screen" id="homeScreen">
+            <h2 class="welcome-title">Welcome to Mega Quiz!</h2>
+            <p class="welcome-subtitle">Test your knowledge with unlimited questions across multiple subjects. No limits, just learning!</p>
+            
+            <div class="feature-cards">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-infinity"></i>
+                    </div>
+                    <h3 class="feature-title">Unlimited Questions</h3>
+                    <p class="feature-desc">Algorithmically generated questions with no limits</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <h3 class="feature-title">Emoji Feedback</h3>
+                    <p class="feature-desc">Fun emoji reactions for correct and incorrect answers</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="feature-title">Multiple Subjects</h3>
+                    <p class="feature-desc">Choose from Math, Science, History, Geography, and more</p>
+                </div>
+            </div>
+            
+            <div class="settings-panel">
+                <h2 class="settings-title">Quiz Settings</h2>
+                
+                <div class="question-count">
+                    <i class="fas fa-infinity"></i> Unlimited questions available!
+                </div>
+                
+                <div class="quiz-mode-selector">
+                    <button class="mode-btn active" id="finiteModeBtn">Set Number of Questions</button>
+                    <button class="mode-btn" id="infiniteModeBtn">Infinite Mode</button>
+                </div>
+                
+                <div class="infinite-mode-info" id="infiniteModeInfo" style="display: none;">
+                    <i class="fas fa-infinity"></i> Answer as many questions as you want! Quiz ends when you choose to stop.
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label for="subjectSelect">Subject</label>
+                        <select id="subjectSelect">
+                            <option value="math">Mathematics</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                            <option value="geography">Geography</option>
+                            <option value="english">English</option>
+                            <option value="general">General Knowledge</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="difficultySelect">Difficulty</label>
+                        <select id="difficultySelect">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item" id="questionCountContainer">
+                        <label for="questionCount">Number of Questions</label>
+                        <input type="number" id="questionCount" min="1" value="10">
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label for="timerEnabled">
+                            <input type="checkbox" id="timerEnabled"> Enable Timer (30 seconds per question)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <button class="btn btn-primary" id="startQuizBtn">
+                        <i class="fas fa-play"></i> Start Quiz
+                    </button>
+                    <button class="btn btn-info" id="previewQuestionsBtn">
+                        <i class="fas fa-eye"></i> Preview Questions
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Question Preview Container -->
+            <div class="preview-container" id="previewContainer">
+                <h3 class="preview-title">Question Preview</h3>
+                <div class="preview-list" id="previewList">
+                    <!-- Preview items will be added here -->
+                </div>
+                <div class="btn-container">
+                    <button class="btn btn-primary" id="closePreviewBtn">
+                        <i class="fas fa-times"></i> Close Preview
+                    </button>
+                    <button class="btn btn-success" id="startFromPreviewBtn">
+                        <i class="fas fa-play"></i> Start Quiz from Preview
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz Area -->
+        <div class="screen quiz-area" id="quizArea">
+            <div class="question-header">
+                <div class="question-number" id="questionNumber">Question 1</div>
+                <div class="score-display" id="scoreDisplay">Score: 0</div>
+            </div>
+            
+            <div class="timer-container" id="timerContainer" style="display: none;">
+                <i class="fas fa-clock"></i>
+                <div class="timer" id="timer">30s</div>
+            </div>
+            
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="question-text" id="questionText">
+                What is the capital city of France?
+            </div>
+            
+            <div class="options-container" id="optionsContainer">
+                <div class="option" data-option="1">
+                    <span class="option-prefix">A</span>
+                    <span class="option-text">London</span>
+                </div>
+                <div class="option" data-option="2">
+                    <span class="option-prefix">B</span>
+                    <span class="option-text">Berlin</span>
+                </div>
+                <div class="option" data-option="3">
+                    <span class="option-prefix">C</span>
+                    <span class="option-text">Paris</span>
+                </div>
+                <div class="option" data-option="4">
+                    <span class="option-prefix">D</span>
+                    <span class="option-text">Madrid</span>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn btn-accent" id="submitAnswerBtn" disabled>
+                    <i class="fas fa-check-circle"></i> Submit Answer
+                </button>
+                <button class="btn btn-primary" id="nextQuestionBtn" style="display: none;">
+                    <i class="fas fa-arrow-right"></i> Next Question
+                </button>
+                <button class="btn btn-info" id="endQuizBtn" style="display: none;">
+                    <i class="fas fa-flag-checkered"></i> End Quiz
+                </button>
+                <button class="btn btn-info" id="homeScreenBtn">
+                    <i class="fas fa-home"></i> Home Screen
+                </button>
+            </div>
+            
+            <div class="feedback-container" id="feedbackContainer">
+                <div class="feedback-emoji" id="feedbackEmoji">😊</div>
+                <div class="feedback-text" id="feedbackText">Correct! Well done!</div>
+                <div class="explanation" id="explanationText">
+                    Paris is the capital and most populous city of France. It is known for its cultural landmarks like the Eiffel Tower and the Louvre Museum.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div class="screen results-container" id="resultsContainer">
+            <h2 class="results-title">Quiz Results</h2>
+            
+            <div class="score-circle" id="scoreCircle">
+                <span id="scorePercent">85%</span>
+            </div>
+            
+            <div class="score-text" id="scoreText">
+                You scored 8 out of 10 questions correctly!
+            </div>
+            
+            <div class="results-feedback" id="resultsFeedback">
+                Great job! You have a solid understanding of this subject.
+            </div>
+            
+            <div class="btn-container">
+                <button class="btn btn-accent" id="restartQuizBtn">
+                    <i class="fas fa-redo"></i> Restart Quiz
+                </button>
+                <button class="btn btn-primary" id="newQuizBtn">
+                    <i class="fas fa-home"></i> Home Screen
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Mega Quiz © 2023 | Unlimited Questions - Learn Without Limits!</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const homeScreen = document.getElementById('homeScreen');
+            const quizArea = document.getElementById('quizArea');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const backBtn = document.getElementById('backBtn');
+            const questionNumber = document.getElementById('questionNumber');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const progressBar = document.getElementById('progressBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const submitAnswerBtn = document.getElementById('submitAnswerBtn');
+            const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+            const endQuizBtn = document.getElementById('endQuizBtn');
+            const feedbackContainer = document.getElementById('feedbackContainer');
+            const feedbackEmoji = document.getElementById('feedbackEmoji');
+            const feedbackText = document.getElementById('feedbackText');
+            const explanationText = document.getElementById('explanationText');
+            const scoreCircle = document.getElementById('scoreCircle');
+            const scorePercent = document.getElementById('scorePercent');
+            const scoreText = document.getElementById('scoreText');
+            const resultsFeedback = document.getElementById('resultsFeedback');
+            const startQuizBtn = document.getElementById('startQuizBtn');
+            const restartQuizBtn = document.getElementById('restartQuizBtn');
+            const newQuizBtn = document.getElementById('newQuizBtn');
+            const homeScreenBtn = document.getElementById('homeScreenBtn');
+            const previewQuestionsBtn = document.getElementById('previewQuestionsBtn');
+            const closePreviewBtn = document.getElementById('closePreviewBtn');
+            const startFromPreviewBtn = document.getElementById('startFromPreviewBtn');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewList = document.getElementById('previewList');
+            const timerContainer = document.getElementById('timerContainer');
+            const timerDisplay = document.getElementById('timer');
+            const timerEnabled = document.getElementById('timerEnabled');
+            const questionCountInput = document.getElementById('questionCount');
+            const questionCountContainer = document.getElementById('questionCountContainer');
+            const finiteModeBtn = document.getElementById('finiteModeBtn');
+            const infiniteModeBtn = document.getElementById('infiniteModeBtn');
+            const infiniteModeInfo = document.getElementById('infiniteModeInfo');
+            
+            // Quiz variables
+            let currentQuestion = 0;
+            let score = 0;
+            let questions = [];
+            let selectedOption = null;
+            let currentScreen = 'home';
+            let timer;
+            let timeLeft = 30;
+            let timerActive = false;
+            let isInfiniteMode = false;
+            let totalQuestionsAnswered = 0;
+            
+            // Correct and incorrect emojis
+            const correctEmojis = ["😊", "👍", "🎉", "👏", "✅", "⭐", "🏆", "💯", "🤩", "🎓"];
+            const incorrectEmojis = ["😢", "👎", "❌", "😕", "🤔", "🙁", "⚠️", "🔍", "😞", "📚"];
+            
+            // Show home screen initially
+            showScreen('home');
+            
+            // Mode selection
+            finiteModeBtn.addEventListener('click', function() {
+                finiteModeBtn.classList.add('active');
+                infiniteModeBtn.classList.remove('active');
+                questionCountContainer.style.display = 'flex';
+                infiniteModeInfo.style.display = 'none';
+                isInfiniteMode = false;
+            });
+            
+            infiniteModeBtn.addEventListener('click', function() {
+                infiniteModeBtn.classList.add('active');
+                finiteModeBtn.classList.remove('active');
+                questionCountContainer.style.display = 'none';
+                infiniteModeInfo.style.display = 'block';
+                isInfiniteMode = true;
+            });
+            
+            // Validate question count input
+            questionCountInput.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                if (value < 1) {
+                    this.value = 1;
+                }
+            });
+            
+            // Start quiz button
+            startQuizBtn.addEventListener('click', startQuiz);
+            
+            // Restart quiz button
+            restartQuizBtn.addEventListener('click', restartQuiz);
+            
+            // New quiz button (goes to home screen)
+            newQuizBtn.addEventListener('click', function() {
+                showScreen('home');
+            });
+            
+            // Home screen button (from quiz area)
+            homeScreenBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to return to the home screen? Your quiz progress will be lost.')) {
+                    stopTimer();
+                    showScreen('home');
+                }
+            });
+            
+            // End quiz button (for infinite mode)
+            endQuizBtn.addEventListener('click', function() {
+                showResults();
+            });
+            
+            // Preview questions button
+            previewQuestionsBtn.addEventListener('click', previewQuestions);
+            
+            // Close preview button
+            closePreviewBtn.addEventListener('click', function() {
+                previewContainer.style.display = 'none';
+            });
+            
+            // Start quiz from preview button
+            startFromPreviewBtn.addEventListener('click', function() {
+                if (questions.length > 0) {
+                    startQuiz();
+                    previewContainer.style.display = 'none';
+                }
+            });
+            
+            // Back button
+            backBtn.addEventListener('click', goBack);
+            
+            // Submit answer button
+            submitAnswerBtn.addEventListener('click', submitAnswer);
+            
+            // Next question button
+            nextQuestionBtn.addEventListener('click', nextQuestion);
+            
+            // Function to show a specific screen
+            function showScreen(screen) {
+                // Hide all screens
+                homeScreen.style.display = 'none';
+                quizArea.style.display = 'none';
+                resultsContainer.style.display = 'none';
+                
+                // Show the selected screen
+                if (screen === 'home') {
+                    homeScreen.style.display = 'flex';
+                    currentScreen = 'home';
+                    backBtn.style.display = 'none';
+                    previewContainer.style.display = 'none';
+                } else if (screen === 'quiz') {
+                    quizArea.style.display = 'block';
+                    currentScreen = 'quiz';
+                    backBtn.style.display = 'flex';
+                } else if (screen === 'results') {
+                    resultsContainer.style.display = 'block';
+                    currentScreen = 'results';
+                    backBtn.style.display = 'flex';
+                }
+            }
+            
+            // Function to go back
+            function goBack() {
+                if (currentScreen === 'quiz') {
+                    if (confirm('Are you sure you want to leave the quiz? Your progress will be lost.')) {
+                        stopTimer();
+                        showScreen('home');
+                    }
+                } else if (currentScreen === 'results') {
+                    showScreen('home');
+                }
+            }
+            
+            // Function to preview questions
+            function previewQuestions() {
+                const subject = document.getElementById('subjectSelect').value;
+                const difficulty = document.getElementById('difficultySelect').value;
+                const questionCount = isInfiniteMode ? 10 : parseInt(document.getElementById('questionCount').value);
+                
+                // Generate questions for preview
+                generateQuestions(subject, difficulty, questionCount);
+                
+                // Clear the preview list
+                previewList.innerHTML = '';
+                
+                // Add questions to preview
+                questions.forEach((question, index) => {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <strong>Question ${index + 1}:</strong> ${question.question}
+                    `;
+                    
+                    previewList.appendChild(previewItem);
+                });
+                
+                // Show the preview container
+                previewContainer.style.display = 'block';
+            }
+            
+            // Function to start the quiz
+            function startQuiz() {
+                const subject = document.getElementById('subjectSelect').value;
+                const difficulty = document.getElementById('difficultySelect').value;
+                const questionCount = isInfiniteMode ? 50 : parseInt(document.getElementById('questionCount').value);
+                timerActive = timerEnabled.checked;
+                
+                // Generate questions based on settings (if not already generated from preview)
+                if (questions.length !== questionCount) {
+                    generateQuestions(subject, difficulty, questionCount);
+                }
+                
+                // Show quiz area
+                showScreen('quiz');
+                
+                // Reset quiz variables
+                currentQuestion = 0;
+                score = 0;
+                totalQuestionsAnswered = 0;
+                
+                // Display first question
+                displayQuestion();
+            }
+            
+            // Function to generate questions
+            function generateQuestions(subject, difficulty, count) {
+                questions = [];
+                
+                // Sample question database with algorithmically generated variations
+                const questionDatabase = {
+                    math: {
+                        easy: [
+                            {
+                                template: "What is {a} + {b}?",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 50) + 1;
+                                    const b = Math.floor(Math.random() * 50) + 1;
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        answer: a + b,
+                                        explanation: `${a} + ${b} = ${a + b}. This is basic addition.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is {a} × {b}?",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 12) + 1;
+                                    const b = Math.floor(Math.random() * 12) + 1;
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        answer: a * b,
+                                        explanation: `${a} × ${b} = ${a * b}. This is basic multiplication.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is {a} - {b}?",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 50) + 10;
+                                    const b = Math.floor(Math.random() * 10) + 1;
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        answer: a - b,
+                                        explanation: `${a} - ${b} = ${a - b}. This is basic subtraction.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is {a} ÷ {b}?",
+                                generate: () => {
+                                    const b = Math.floor(Math.random() * 10) + 1;
+                                    const a = b * (Math.floor(Math.random() * 10) + 1);
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        answer: a / b,
+                                        explanation: `${a} ÷ ${b} = ${a / b}. This is basic division.`
+                                    };
+                                }
+                            }
+                        ],
+                        medium: [
+                            {
+                                template: "Solve for x: {a}x + {b} = {c}",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 10) + 1;
+                                    const b = Math.floor(Math.random() * 20);
+                                    const c = a * (Math.floor(Math.random() * 10) + 1) + b;
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        c: c,
+                                        answer: (c - b) / a,
+                                        explanation: `First subtract ${b} from both sides: ${a}x = ${c - b}. Then divide both sides by ${a}: x = ${(c - b) / a}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is {a}²?",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 15) + 1;
+                                    return {
+                                        a: a,
+                                        answer: a * a,
+                                        explanation: `${a} squared (${a}²) is ${a} × ${a} = ${a * a}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the square root of {a}? (Round to 2 decimal places)",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 100) + 1;
+                                    return {
+                                        a: a,
+                                        answer: Math.sqrt(a).toFixed(2),
+                                        explanation: `The square root of ${a} is approximately ${Math.sqrt(a).toFixed(2)}.`
+                                    };
+                                }
+                            }
+                        ],
+                        hard: [
+                            {
+                                template: "What is the area of a circle with radius {r}? (Use π = 3.14)",
+                                generate: () => {
+                                    const r = Math.floor(Math.random() * 10) + 1;
+                                    return {
+                                        r: r,
+                                        answer: (3.14 * r * r).toFixed(2),
+                                        explanation: `Area = πr² = 3.14 × ${r}² = 3.14 × ${r * r} = ${(3.14 * r * r).toFixed(2)}`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is {a}% of {b}?",
+                                generate: () => {
+                                    const a = Math.floor(Math.random() * 50) + 1;
+                                    const b = Math.floor(Math.random() * 200) + 10;
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        answer: (a * b / 100).toFixed(1),
+                                        explanation: `${a}% of ${b} is ${a} × ${b} ÷ 100 = ${(a * b / 100).toFixed(1)}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "Simplify: ({a}x² + {b}x + {c}) / (x + {d})",
+                                generate: () => {
+                                    const d = Math.floor(Math.random() * 5) + 1;
+                                    const a = Math.floor(Math.random() * 3) + 1;
+                                    const b = a * d + Math.floor(Math.random() * 5) + 1;
+                                    const c = b * d;
+                                    return {
+                                        a: a,
+                                        b: b,
+                                        c: c,
+                                        d: d,
+                                        answer: `${a}x + ${b}`,
+                                        explanation: `The expression simplifies to ${a}x + ${b} because (x + ${d})(${a}x + ${b}) = ${a}x² + ${b}x + ${a*d}x + ${b*d} = ${a}x² + ${b + a*d}x + ${c}.`
+                                    };
+                                }
+                            }
+                        ]
+                    },
+                    science: {
+                        easy: [
+                            {
+                                template: "What is the chemical symbol for {element}?",
+                                generate: () => {
+                                    const elements = [
+                                        { name: "Oxygen", symbol: "O" },
+                                        { name: "Hydrogen", symbol: "H" },
+                                        { name: "Carbon", symbol: "C" },
+                                        { name: "Nitrogen", symbol: "N" },
+                                        { name: "Sodium", symbol: "Na" },
+                                        { name: "Chlorine", symbol: "Cl" }
+                                    ];
+                                    const element = elements[Math.floor(Math.random() * elements.length)];
+                                    return {
+                                        element: element.name,
+                                        answer: element.symbol,
+                                        explanation: `The chemical symbol for ${element.name} is ${element.symbol}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which planet is known as the {nickname}?",
+                                generate: () => {
+                                    const planets = [
+                                        { name: "Mars", nickname: "Red Planet" },
+                                        { name: "Earth", nickname: "Blue Planet" },
+                                        { name: "Venus", nickname: "Morning Star" },
+                                        { name: "Jupiter", nickname: "Gas Giant" }
+                                    ];
+                                    const planet = planets[Math.floor(Math.random() * planets.length)];
+                                    return {
+                                        nickname: planet.nickname,
+                                        answer: planet.name,
+                                        explanation: `${planet.name} is known as the ${planet.nickname}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the closest star to Earth?",
+                                generate: () => {
+                                    return {
+                                        answer: "The Sun",
+                                        explanation: "The Sun is the closest star to Earth, located about 93 million miles away."
+                                    };
+                                }
+                            }
+                        ],
+                        medium: [
+                            {
+                                template: "What is the atomic number of {element}?",
+                                generate: () => {
+                                    const elements = [
+                                        { name: "Oxygen", number: 8 },
+                                        { name: "Carbon", number: 6 },
+                                        { name: "Hydrogen", number: 1 },
+                                        { name: "Gold", number: 79 },
+                                        { name: "Iron", number: 26 },
+                                        { name: "Copper", number: 29 }
+                                    ];
+                                    const element = elements[Math.floor(Math.random() * elements.length)];
+                                    return {
+                                        element: element.name,
+                                        answer: element.number,
+                                        explanation: `The atomic number of ${element.name} is ${element.number}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the pH value of pure water?",
+                                generate: () => {
+                                    return {
+                                        answer: "7",
+                                        explanation: "Pure water has a pH of 7, which is considered neutral on the pH scale."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which gas do plants absorb from the atmosphere?",
+                                generate: () => {
+                                    return {
+                                        answer: "Carbon Dioxide",
+                                        explanation: "Plants absorb carbon dioxide (CO₂) from the atmosphere during photosynthesis."
+                                    };
+                                }
+                            }
+                        ],
+                        hard: [
+                            {
+                                template: "What is the speed of light in vacuum?",
+                                generate: () => {
+                                    return {
+                                        answer: "299,792,458 m/s",
+                                        explanation: "The speed of light in vacuum is exactly 299,792,458 meters per second. This is a fundamental constant in physics."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the main gas found in Earth's atmosphere?",
+                                generate: () => {
+                                    return {
+                                        answer: "Nitrogen",
+                                        explanation: "Nitrogen is the most abundant gas in Earth's atmosphere, making up about 78% of the air we breathe."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the unit of electrical resistance?",
+                                generate: () => {
+                                    return {
+                                        answer: "Ohm",
+                                        explanation: "The ohm (Ω) is the unit of electrical resistance, named after German physicist Georg Ohm."
+                                    };
+                                }
+                            }
+                        ]
+                    },
+                    history: {
+                        easy: [
+                            {
+                                template: "In what year did {event}?",
+                                generate: () => {
+                                    const events = [
+                                        { event: "World War II end", year: 1945 },
+                                        { event: "the first moon landing", year: 1969 },
+                                        { event: "the American Declaration of Independence", year: 1776 },
+                                        { event: "the fall of the Berlin Wall", year: 1989 }
+                                    ];
+                                    const event = events[Math.floor(Math.random() * events.length)];
+                                    return {
+                                        event: event.event,
+                                        answer: event.year,
+                                        explanation: `${event.event} in ${event.year}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "Who was the first President of the United States?",
+                                generate: () => {
+                                    return {
+                                        answer: "George Washington",
+                                        explanation: "George Washington was the first President of the United States, serving from 1789 to 1797."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which ancient civilization built the pyramids?",
+                                generate: () => {
+                                    return {
+                                        answer: "Egyptians",
+                                        explanation: "The ancient Egyptians built the pyramids, most notably the Great Pyramid of Giza around 2560 BCE."
+                                    };
+                                }
+                            }
+                        ],
+                        medium: [
+                            {
+                                template: "Who was the first Emperor of China?",
+                                generate: () => {
+                                    return {
+                                        answer: "Qin Shi Huang",
+                                        explanation: "Qin Shi Huang was the first Emperor of China, who unified the country and began the construction of the Great Wall in the 3rd century BCE."
+                                    };
+                                }
+                            },
+                            {
+                                template: "When did the French Revolution begin?",
+                                generate: () => {
+                                    return {
+                                        answer: "1789",
+                                        explanation: "The French Revolution began in 1789 with the storming of the Bastille and lasted until 1799."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Who wrote the 'I Have a Dream' speech?",
+                                generate: () => {
+                                    return {
+                                        answer: "Martin Luther King Jr.",
+                                        explanation: "Martin Luther King Jr. delivered his famous 'I Have a Dream' speech during the March on Washington in 1963."
+                                    };
+                                }
+                            }
+                        ],
+                        hard: [
+                            {
+                                template: "The ancient city of Constantinople is now known as what?",
+                                generate: () => {
+                                    return {
+                                        answer: "Istanbul",
+                                        explanation: "Constantinople was the capital of the Byzantine Empire. After its conquest by the Ottomans in 1453, it was renamed Istanbul."
+                                    };
+                                }
+                            },
+                            {
+                                template: "When was the Magna Carta signed?",
+                                generate: () => {
+                                    return {
+                                        answer: "1215",
+                                        explanation: "The Magna Carta was signed in 1215 by King John of England, establishing the principle that everyone, including the king, was subject to the law."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Who was the leader of the Soviet Union during the Cuban Missile Crisis?",
+                                generate: () => {
+                                    return {
+                                        answer: "Nikita Khrushchev",
+                                        explanation: "Nikita Khrushchev was the leader of the Soviet Union during the Cuban Missile Crisis in 1962."
+                                    };
+                                }
+                            }
+                        ]
+                    },
+                    geography: {
+                        easy: [
+                            {
+                                template: "What is the capital city of {country}?",
+                                generate: () => {
+                                    const countries = [
+                                        { country: "France", capital: "Paris" },
+                                        { country: "Germany", capital: "Berlin" },
+                                        { country: "Italy", capital: "Rome" },
+                                        { country: "Spain", capital: "Madrid" },
+                                        { country: "Japan", capital: "Tokyo" },
+                                        { country: "Australia", capital: "Canberra" }
+                                    ];
+                                    const country = countries[Math.floor(Math.random() * countries.length)];
+                                    return {
+                                        country: country.country,
+                                        answer: country.capital,
+                                        explanation: `The capital of ${country.country} is ${country.capital}.`
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which is the largest ocean on Earth?",
+                                generate: () => {
+                                    return {
+                                        answer: "Pacific Ocean",
+                                        explanation: "The Pacific Ocean is the largest and deepest ocean on Earth, covering about 30% of the Earth's surface."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the longest river in the world?",
+                                generate: () => {
+                                    return {
+                                        answer: "Nile",
+                                        explanation: "The Nile River is the longest river in the world at approximately 6,650 km (4,130 miles) in length."
+                                    };
+                                }
+                            }
+                        ],
+                        medium: [
+                            {
+                                template: "Which country has the most natural lakes?",
+                                generate: () => {
+                                    return {
+                                        answer: "Canada",
+                                        explanation: "Canada has the most natural lakes in the world, with over 2 million lakes covering about 7.6% of the country's land area."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the capital of Australia?",
+                                generate: () => {
+                                    return {
+                                        answer: "Canberra",
+                                        explanation: "Canberra is the capital city of Australia. It is located in the Australian Capital Territory."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which desert is the largest in the world?",
+                                generate: () => {
+                                    return {
+                                        answer: "Antarctic Desert",
+                                        explanation: "The Antarctic Desert is the largest desert in the world. Although it's covered in ice, it meets the criteria of a desert due to its low precipitation."
+                                    };
+                                }
+                            }
+                        ],
+                        hard: [
+                            {
+                                template: "Which country has the longest coastline?",
+                                generate: () => {
+                                    return {
+                                        answer: "Canada",
+                                        explanation: "Canada has the longest coastline in the world, measuring 202,080 kilometers (125,570 miles)."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the deepest point in the world's oceans?",
+                                generate: () => {
+                                    return {
+                                        answer: "Mariana Trench",
+                                        explanation: "The Mariana Trench in the western Pacific Ocean is the deepest point on Earth, with a depth of about 36,070 feet (10,994 meters)."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which African country was never colonized?",
+                                generate: () => {
+                                    return {
+                                        answer: "Ethiopia",
+                                        explanation: "Ethiopia is widely considered to be the only African country that was never colonized, except for a brief occupation by Italy from 1936-1941."
+                                    };
+                                }
+                            }
+                        ]
+                    },
+                    english: {
+                        easy: [
+                            {
+                                template: "Which of these is a noun?",
+                                generate: () => {
+                                    const words = ["run", "beautiful", "quickly", "dog"];
+                                    return {
+                                        answer: "dog",
+                                        explanation: "A noun is a word that represents a person, place, thing, or idea. 'Dog' is a noun, while the other options are verbs, adjectives, or adverbs."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the past tense of 'bring'?",
+                                generate: () => {
+                                    return {
+                                        answer: "brought",
+                                        explanation: "The past tense of 'bring' is 'brought'. It's an irregular verb that doesn't follow the standard -ed pattern."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which word is a synonym for 'happy'?",
+                                generate: () => {
+                                    return {
+                                        answer: "joyful",
+                                        explanation: "A synonym is a word that means the same or nearly the same as another word. 'Joyful' is a synonym for 'happy'."
+                                    };
+                                }
+                            }
+                        ],
+                        medium: [
+                            {
+                                template: "Which literary device is used in 'The stars danced playfully in the moonlit sky'?",
+                                generate: () => {
+                                    return {
+                                        answer: "Personification",
+                                        explanation: "This sentence uses personification, which gives human qualities (dancing) to non-human objects (stars)."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Who wrote 'Romeo and Juliet'?",
+                                generate: () => {
+                                    return {
+                                        answer: "William Shakespeare",
+                                        explanation: "William Shakespeare wrote the tragic play 'Romeo and Juliet' in the late 16th century."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the adjective in the sentence: 'The quick brown fox jumps over the lazy dog'?",
+                                generate: () => {
+                                    return {
+                                        answer: "quick, brown, lazy",
+                                        explanation: "Adjectives are words that describe nouns. In this sentence, 'quick', 'brown', and 'lazy' are all adjectives."
+                                    };
+                                }
+                            }
+                        ],
+                        hard: [
+                            {
+                                template: "What is the term for a word that is spelled the same forwards and backwards?",
+                                generate: () => {
+                                    return {
+                                        answer: "Palindrome",
+                                        explanation: "A palindrome is a word, phrase, or sequence that reads the same backward as forward. Examples include 'radar' and 'level'."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Who wrote '1984'?",
+                                generate: () => {
+                                    return {
+                                        answer: "George Orwell",
+                                        explanation: "George Orwell wrote the dystopian novel '1984', which was published in 1949."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the study of word origins called?",
+                                generate: () => {
+                                    return {
+                                        answer: "Etymology",
+                                        explanation: "Etymology is the study of the origin of words and the way in which their meanings have changed throughout history."
+                                    };
+                                }
+                            }
+                        ]
+                    },
+                    general: {
+                        easy: [
+                            {
+                                template: "What is the largest mammal in the world?",
+                                generate: () => {
+                                    return {
+                                        answer: "Blue Whale",
+                                        explanation: "The blue whale is the largest mammal in the world, reaching lengths of up to 100 feet and weights of up to 200 tons."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which planet is closest to the Sun?",
+                                generate: () => {
+                                    return {
+                                        answer: "Mercury",
+                                        explanation: "Mercury is the closest planet to the Sun in our solar system."
+                                    };
+                                }
+                            },
+                            {
+                                template: "How many continents are there on Earth?",
+                                generate: () => {
+                                    return {
+                                        answer: "7",
+                                        explanation: "There are 7 continents on Earth: Asia, Africa, North America, South America, Antarctica, Europe, and Australia."
+                                    };
+                                }
+                            }
+                        ],
+                        medium: [
+                            {
+                                template: "Who painted the Mona Lisa?",
+                                generate: () => {
+                                    return {
+                                        answer: "Leonardo da Vinci",
+                                        explanation: "Leonardo da Vinci painted the Mona Lisa in the early 16th century. It is one of the most famous paintings in the world."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Which element has the chemical symbol 'O'?",
+                                generate: () => {
+                                    return {
+                                        answer: "Oxygen",
+                                        explanation: "Oxygen has the chemical symbol 'O'. It is essential for respiration and makes up about 21% of Earth's atmosphere."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the hardest natural substance on Earth?",
+                                generate: () => {
+                                    return {
+                                        answer: "Diamond",
+                                        explanation: "Diamond is the hardest known natural material on Earth, scoring 10 on the Mohs scale of mineral hardness."
+                                    };
+                                }
+                            }
+                        ],
+                        hard: [
+                            {
+                                template: "Which country has the most time zones?",
+                                generate: () => {
+                                    return {
+                                        answer: "France",
+                                        explanation: "France has the most time zones of any country, with 12 time zones due to its overseas territories."
+                                    };
+                                }
+                            },
+                            {
+                                template: "What is the smallest country in the world?",
+                                generate: () => {
+                                    return {
+                                        answer: "Vatican City",
+                                        explanation: "Vatican City is the smallest country in the world, with an area of just 0.17 square miles (0.44 km²)."
+                                    };
+                                }
+                            },
+                            {
+                                template: "Who was the first woman to win a Nobel Prize?",
+                                generate: () => {
+                                    return {
+                                        answer: "Marie Curie",
+                                        explanation: "Marie Curie was the first woman to win a Nobel Prize, awarded in Physics in 1903."
+                                    };
+                                }
+                            }
+                        ]
+                    }
+                };
+                
+                const subjectTemplates = questionDatabase[subject][difficulty];
+                
+                for (let i = 0; i < count; i++) {
+                    const template = subjectTemplates[Math.floor(Math.random() * subjectTemplates.length)];
+                    const data = template.generate();
+                    
+                    let questionText = template.template;
+                    if (template.template.includes('{')) {
+                        for (const key in data) {
+                            if (key !== 'answer' && key !== 'explanation') {
+                                questionText = questionText.replace(`{${key}}`, data[key]);
+                            }
+                        }
+                    }
+                    
+                    // Generate options
+                    const options = [data.answer];
+                    while (options.length < 4) {
+                        let wrongAnswer;
+                        if (typeof data.answer === 'number') {
+                            wrongAnswer = data.answer + Math.floor(Math.random() * 10) - 5;
+                            if (wrongAnswer === data.answer || wrongAnswer <= 0) continue;
+                        } else {
+                            // For text answers, use similar but incorrect options
+                            const wrongAnswers = {
+                                "Paris": ["London", "Berlin", "Madrid"],
+                                "Blue Whale": ["Elephant", "Giraffe", "Polar Bear"],
+                                "Leonardo da Vinci": ["Vincent van Gogh", "Pablo Picasso", "Michelangelo"],
+                                "Diamond": ["Gold", "Iron", "Platinum"],
+                                "O": ["H", "C", "N"],
+                                "Mars": ["Venus", "Jupiter", "Saturn"],
+                                "brought": ["brang", "bringed", "brung"],
+                                "Personification": ["Simile", "Metaphor", "Hyperbole"],
+                                "Nile": ["Amazon", "Mississippi", "Yangtze"],
+                                "Canada": ["United States", "Russia", "China"],
+                                "George Washington": ["Thomas Jefferson", "John Adams", "Benjamin Franklin"],
+                                "Istanbul": ["Athens", "Rome", "Cairo"],
+                                "1945": ["1943", "1947", "1950"],
+                                "8": ["6", "7", "9"],
+                                "Rajendra Prasad": ["Jawaharlal Nehru", "Sardar Patel", "B.R. Ambedkar"],
+                                "7": ["5", "6", "8"],
+                                "Mercury": ["Venus", "Earth", "Mars"],
+                                "Pacific Ocean": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"],
+                                "Canberra": ["Sydney", "Melbourne", "Perth"],
+                                "Nitrogen": ["Oxygen", "Carbon Dioxide", "Argon"],
+                                "Ohm": ["Volt", "Ampere", "Watt"],
+                                "Qin Shi Huang": ["Emperor Wu", "Emperor Taizong", "Kublai Khan"],
+                                "1789": ["1776", "1799", "1812"],
+                                "Martin Luther King Jr.": ["Malcolm X", "Rosa Parks", "Frederick Douglass"],
+                                "1215": ["1066", "1415", "1776"],
+                                "Nikita Khrushchev": ["Joseph Stalin", "Vladimir Lenin", "Mikhail Gorbachev"],
+                                "Antarctic Desert": ["Sahara Desert", "Gobi Desert", "Arabian Desert"],
+                                "Ethiopia": ["Nigeria", "South Africa", "Egypt"],
+                                "joyful": ["sad", "angry", "tired"],
+                                "William Shakespeare": ["Charles Dickens", "Jane Austen", "Mark Twain"],
+                                "quick, brown, lazy": ["fox, dog", "jumps, over", "the, the"],
+                                "Palindrome": ["Anagram", "Homophone", "Acronym"],
+                                "George Orwell": ["Aldous Huxley", "Ray Bradbury", "H.G. Wells"],
+                                "Etymology": ["Syntax", "Phonology", "Semantics"],
+                                "Vatican City": ["Monaco", "San Marino", "Liechtenstein"],
+                                "Marie Curie": ["Rosa Parks", "Florence Nightingale", "Amelia Earhart"]
+                            };
+                            
+                            if (wrongAnswers[data.answer]) {
+                                wrongAnswer = wrongAnswers[data.answer][Math.floor(Math.random() * wrongAnswers[data.answer].length)];
+                            } else {
+                                wrongAnswer = "Incorrect Option";
+                            }
+                        }
+                        
+                        if (!options.includes(wrongAnswer)) {
+                            options.push(wrongAnswer);
+                        }
+                    }
+                    
+                    // Shuffle options
+                    for (let i = options.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [options[i], options[j]] = [options[j], options[i]];
+                    }
+                    
+                    // Find correct answer index
+                    const correctIndex = options.indexOf(data.answer);
+                    
+                    questions.push({
+                        question: questionText,
+                        options: options,
+                        correctAnswer: correctIndex,
+                        explanation: data.explanation
+                    });
+                }
+            }
+            
+            // Function to display the current question
+            function displayQuestion() {
+                // For infinite mode, generate a new question if we've exhausted our pool
+                if (isInfiniteMode && currentQuestion >= questions.length) {
+                    const subject = document.getElementById('subjectSelect').value;
+                    const difficulty = document.getElementById('difficultySelect').value;
+                    generateQuestions(subject, difficulty, 10); // Generate 10 more questions
+                }
+                
+                // Update question number and score
+                if (isInfiniteMode) {
+                    questionNumber.textContent = `Question ${totalQuestionsAnswered + 1}`;
+                    progressContainer.style.display = 'none';
+                } else {
+                    questionNumber.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+                    progressContainer.style.display = 'block';
+                    progressBar.style.width = `${((currentQuestion) / questions.length) * 100}%`;
+                }
+                
+                scoreDisplay.textContent = `Score: ${score}`;
+                
+                // Get current question
+                const question = questions[currentQuestion];
+                
+                // Display question text
+                questionText.textContent = question.question;
+                
+                // Clear options container
+                optionsContainer.innerHTML = '';
+                
+                // Add options
+                const optionPrefixes = ['A', 'B', 'C', 'D'];
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.setAttribute('data-option', index);
+                    optionElement.innerHTML = `
+                        <span class="option-prefix">${optionPrefixes[index]}</span>
+                        <span class="option-text">${option}</span>
+                    `;
+                    
+                    optionElement.addEventListener('click', function() {
+                        // Remove selected class from all options
+                        document.querySelectorAll('.option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        
+                        // Add selected class to clicked option
+                        this.classList.add('selected');
+                        
+                        // Enable submit button
+                        submitAnswerBtn.disabled = false;
+                        
+                        // Store selected option
+                        selectedOption = index;
+                    });
+                    
+                    optionsContainer.appendChild(optionElement);
+                });
+                
+                // Hide feedback and next button
+                feedbackContainer.style.display = 'none';
+                nextQuestionBtn.style.display = 'none';
+                endQuizBtn.style.display = isInfiniteMode ? 'block' : 'none';
+                submitAnswerBtn.style.display = 'block';
+                submitAnswerBtn.disabled = true;
+                
+                // Reset selected option
+                selectedOption = null;
+                
+                // Start timer if enabled
+                if (timerActive) {
+                    startTimer();
+                    timerContainer.style.display = 'flex';
+                } else {
+                    timerContainer.style.display = 'none';
+                }
+            }
+            
+            // Timer functions
+            function startTimer() {
+                timeLeft = 30;
+                timerDisplay.textContent = `${timeLeft}s`;
+                timerDisplay.style.color = '#e74c3c';
+                timerDisplay.style.background = '#fadbd8';
+                
+                timer = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.textContent = `${timeLeft}s`;
+                    
+                    if (timeLeft <= 10) {
+                        timerDisplay.style.color = '#e74c3c';
+                        timerDisplay.style.background = '#fadbd8';
+                    } else if (timeLeft <= 20) {
+                        timerDisplay.style.color = '#f39c12';
+                        timerDisplay.style.background = '#fdebd0';
+                    }
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        timerDisplay.textContent = "Time's up!";
+                        // Auto-submit if time runs out
+                        if (selectedOption !== null) {
+                            submitAnswer();
+                        } else {
+                            // Mark as incorrect if no answer selected
+                            showFeedback(false, "You ran out of time! The correct answer was: " + questions[currentQuestion].options[questions[currentQuestion].correctAnswer]);
+                            nextQuestionBtn.style.display = 'block';
+                            submitAnswerBtn.style.display = 'none';
+                            endQuizBtn.style.display = isInfiniteMode ? 'block' : 'none';
+                        }
+                    }
+                }, 1000);
+            }
+            
+            function stopTimer() {
+                if (timer) {
+                    clearInterval(timer);
+                    timer = null;
+                }
+            }
+            
+            // Function to submit answer
+            function submitAnswer() {
+                // Stop timer
+                stopTimer();
+                
+                // Disable submit button
+                submitAnswerBtn.disabled = true;
+                
+                // Get current question
+                const question = questions[currentQuestion];
+                
+                // Check if answer is correct
+                const isCorrect = selectedOption === question.correctAnswer;
+                
+                // Update score if correct
+                if (isCorrect) {
+                    score++;
+                    scoreDisplay.textContent = `Score: ${score}`;
+                }
+                
+                // Increment total questions answered
+                totalQuestionsAnswered++;
+                
+                // Show feedback
+                showFeedback(isCorrect, question.explanation);
+            }
+            
+            // Function to show feedback
+            function showFeedback(isCorrect, explanation) {
+                // Show feedback container
+                feedbackContainer.style.display = 'block';
+                
+                // Set emoji and text based on correctness
+                if (isCorrect) {
+                    const randomEmoji = correctEmojis[Math.floor(Math.random() * correctEmojis.length)];
+                    feedbackEmoji.textContent = randomEmoji;
+                    feedbackText.textContent = "Correct! Well done!";
+                    feedbackText.className = "feedback-text correct-feedback";
+                } else {
+                    const randomEmoji = incorrectEmojis[Math.floor(Math.random() * incorrectEmojis.length)];
+                    feedbackEmoji.textContent = randomEmoji;
+                    feedbackText.textContent = "Incorrect. Try again next time!";
+                    feedbackText.className = "feedback-text incorrect-feedback";
+                }
+                
+                // Set explanation text
+                explanationText.textContent = explanation;
+                
+                // Show next button
+                nextQuestionBtn.style.display = 'block';
+                endQuizBtn.style.display = isInfiniteMode ? 'block' : 'none';
+                submitAnswerBtn.style.display = 'none';
+                
+                // Highlight correct and incorrect answers
+                const options = document.querySelectorAll('.option');
+                options.forEach((option, index) => {
+                    if (index === questions[currentQuestion].correctAnswer) {
+                        option.classList.add('correct');
+                    } else if (index === selectedOption && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+            }
+            
+            // Function to move to next question
+            function nextQuestion() {
+                currentQuestion++;
+                
+                // For infinite mode, check if we need to generate more questions
+                if (isInfiniteMode && currentQuestion >= questions.length) {
+                    const subject = document.getElementById('subjectSelect').value;
+                    const difficulty = document.getElementById('difficultySelect').value;
+                    generateQuestions(subject, difficulty, 10); // Generate 10 more questions
+                }
+                
+                // Check if quiz is complete (only for finite mode)
+                if (!isInfiniteMode && currentQuestion >= questions.length) {
+                    showResults();
+                } else {
+                    displayQuestion();
+                }
+            }
+            
+            // Function to show results
+            function showResults() {
+                // Show results screen
+                showScreen('results');
+                
+                // Calculate score percentage
+                const totalQuestions = isInfiniteMode ? totalQuestionsAnswered : questions.length;
+                const scorePercentage = Math.round((score / totalQuestions) * 100);
+                
+                // Update score elements
+                scorePercent.textContent = `${scorePercentage}%`;
+                scoreText.textContent = `You scored ${score} out of ${totalQuestions} questions correctly!`;
+                
+                // Set feedback based on score
+                if (scorePercentage >= 90) {
+                    resultsFeedback.textContent = "Outstanding! You're an expert in this subject!";
+                    resultsFeedback.className = "results-feedback excellent";
+                    scoreCircle.style.background = "#2ecc71";
+                } else if (scorePercentage >= 70) {
+                    resultsFeedback.textContent = "Great job! You have a solid understanding of this subject.";
+                    resultsFeedback.className = "results-feedback good";
+                    scoreCircle.style.background = "#3498db";
+                } else if (scorePercentage >= 50) {
+                    resultsFeedback.textContent = "Good effort! With a bit more study, you'll master this subject.";
+                    resultsFeedback.className = "results-feedback average";
+                    scoreCircle.style.background = "#f39c12";
+                } else {
+                    resultsFeedback.textContent = "Keep studying! You'll improve with more practice.";
+                    resultsFeedback.className = "results-feedback poor";
+                    scoreCircle.style.background = "#e74c3c";
+                }
+            }
+            
+            // Function to restart the quiz
+            function restartQuiz() {
+                // Reset quiz variables
+                currentQuestion = 0;
+                score = 0;
+                totalQuestionsAnswered = 0;
+                
+                // Show quiz area
+                showScreen('quiz');
+                
+                // Display first question
+                displayQuestion();
+            }
+        });
+    </script>
+</body>
+</html>
